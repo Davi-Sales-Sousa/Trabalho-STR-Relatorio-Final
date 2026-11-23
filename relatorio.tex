@@ -1,0 +1,164 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{caption}
+\captionsetup[table]{labelfont=normalfont,textfont=normalfont}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Controle de sala climatizada\\
+	{\footnotesize \textsuperscript{Sistemas em Tempo Real}}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Davi Sales de Sousa}
+	\IEEEauthorblockA{\textit{180015401} \\
+		\textit{Engenharia Mecatrônica - UnB}\\
+		Brasília, Brasil \\
+		davi.sales@aluno.unb.br}
+	\and
+	\IEEEauthorblockN{2\textsuperscript{nd} Giovanna Nogueira Freire}
+	\IEEEauthorblockA{\textit{200018710} \\
+		\textit{Engenharia Mecatrônica - UnB}\\
+		Brasília, Brasil \\
+		giovanna.freire@aluno.unb.br}
+	\and
+	\IEEEauthorblockN{3\textsuperscript{rd} Luiz Felipe Ducat}
+	\IEEEauthorblockA{\textit{231035400} \\
+		\textit{Ciência da Computação - UnB}\\
+		Brasília, Brasil \\
+		luiz.ducat@aluno.unb.br}
+	\and
+	\IEEEauthorblockN{4\textsuperscript{th} Pedro Dantas Freitas}
+	\IEEEauthorblockA{\textit{200026011} \\
+		\textit{Engenharia Mecatrônica - UnB}\\
+		Brasília, Brasil \\
+		freitas.pedro@aluno.unb.br}
+}
+\maketitle
+
+\begin{abstract}
+	
+	Este trabalho o desenvolvimento da solução para o problema de regulação do clima ambiente baseada nos princípios de sistemas de tempo real. A solução implementada é composta por um sistema com um sensor de umidade do ar e temperatura e dois atuadores: um umidificador de ar, ventilador 12V, visor LCD para verificar status, botões para interação com o sistema e um arduino uno para controle e execução das tarefas. Tal implementação é feita em escala reduzida por praticidade e disponibilidade de materiais, entretando, os conceitos de modelagem utilizados podem ser extrapolados para uma versão em tamanho real. 
+\end{abstract}
+
+\begin{IEEEkeywords}
+	Tempo Real, climatização, automação, controle.
+\end{IEEEkeywords}
+
+\section{Objetivos}
+Este artigo tem como objetivo o desenvolvimento de uma aplicação prática dos conceitos apresentados na disciplina de Sistemas de Tempo Real ministrada pelo professor Dr. Flavio de Barros Vidal. Este trabalho representa a segunda etapa do projeto onde será apresentado todo o processo de solução utilizado para colocar em prática o que foi definido na primeira etapa, desde a modelagem até a implementação do sistema.
+
+\section{Introdução}
+
+
+\section{Materiais e métodos}
+\subsection{Lista de Materiais} 
+De acordo com a solução proposta para o problema e as tarefas concebidas após análise uma lista preeliminar, chegou-se a uma lista preeliminar de materiais a serem utilizados na implementação do projeto, são eles a placa esp32 e todo o devkit para projeto, um sensor de temperatura e umidade DHT22, um display tela LCD para visualizar as informações do sistema, um módulo umidificador ultrassônico,um MOSFET para acionamento de potência, resistores, LEDs, uma protoboard para auxílio na montagem dos circuitos, jumpers e uma fonte 5V/12V para alimentar os elementos de potência.
+Conforme o avanço do projeto esta lista de materiais será melhorada e incrementada para satisfazer as necessidades.
+
+\subsection{Descrição de tarefas}
+
+Cada tarefa possui uma estimativa de tempo de execução no pior caso (WCET) e diferentes tipos, \textit{triggers}, \textit{deadline}, período e classificação, algumas possuem também relação de exclusão mútua. Por isso, para uma melhor visualização e síntese dessas características foram criadas duas tabelas \ref{tab:tarefas} e \ref{tab:tarefas2}.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Tarefa & WCET & Tipo & Período & Deadline\\
+		\hline
+		1 & 0.2s& periódica& 2h& 1min \\
+		\hline
+		2 & 0.2s& aperiódica& não tem& 1min\\
+		\hline
+		3 & 5s& esporádica& não tem& 50s\\
+		\hline
+		4 & 5s& aperiódica& não tem& 50s\\
+		\hline
+		5 & 5s& esporádica& não tem& 50s\\
+		\hline
+		6 & 5s& esporádica& não tem& 50s\\
+		\hline
+		7 & 1s& periódica& 1h& 1min\\
+		\hline
+		8 & 1s& periódica& 1h& 1min\\
+		\hline
+	\end{tabular}
+	\caption{Classificação das tarefas com respeito aos respectivos WCETs, tipos de tarefas, períodos e deadlines}
+	\label{tab:tarefas}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Tarefa & Trigger & Ex. mútua \\
+		\hline
+		1 & Temporizador& Umidificador\\
+		\hline
+		2 & Botão de desligar o umidificador& Umidificador\\
+		\hline
+		3 & Botão de ligar o ventilador& Ventilador\\
+		\hline
+		4 & Botão de desligar o ventilador& Ventilador\\
+		\hline
+		5 & Botão de aumentar a velodidade do ventilador& Ventilador\\
+		\hline
+		6 & Botão de diminuir a velocidade do ventilador& Ventilador\\
+		\hline
+		7 & Temporizador& Nenhuma\\
+		\hline
+		8 & Temporizador& Nenhuma\\
+		\hline
+	\end{tabular}
+	\caption{Classificação das tarefas com respeito ao respectivos triggers e exclusões mútuas}
+	\label{tab:tarefas2}
+\end{table}
+
+Abaixo encontra-se a descrição de cada tarefa.
+
+\subsubsection{Ligar o umidificador}
+O controlador envia um sinal (1) para o switch que aciona o umidificador e armazena esse sinal em uma flag que indica que o umidificador está ligado, e inicia um temporizador de x minutos, que servirá de gatilho para a tarefa "Desligar o umidificador", sendo o valor de x alterável e inicialmente igual a 20.
+
+\subsubsection{Desligar o umidificador}
+O controlador confere a flag que inidica se o umidificador está ligado e, caso esteja, envia um sinal (0) para o switch que desaciona o umidificador e atualiza a flag para indicar que o umidificador está desligado.
+
+\subsubsection{Ligar o ventilador}
+O controlador confere a flag que indica se o ventilador está ligado e, caso não esteja, envia um pulso que aciona o botão "on/off" do controle remoto do ventilador para ligar o ventilador e atualiza a flag para indicar que o ventilador está ligado. 
+
+\subsubsection{Desligar o ventilador}
+O controlador confere a flag que indica se o ventilador está ligado e, caso esteja, envia um pulso que aciona o botão "on/off" do controle remoto para desligar o ventilador e atualiza a flag para indicar que o ventilador está desligado.
+
+\subsubsection{Aumentar a velocidade do ventilador}
+O controlador envia um pulso que aciona o botão "+" do controle remoto do ventilador, para aumentar a velocidade do ventilador.
+
+\subsubsection{Diminuir a velocidade do ventilador}
+O controlador envia um pulso que aciona o botão "-" do controle remoto do ventilador, para diminuir a velocidade do ventilador.
+
+\subsubsection{Ler o sensor de Temperatura}
+O controlador calcula o sinal médio recebido do sensor de temperatura em um intervalor de tempo t, alterável e com valor inicial de 100ms, transduz esse valor médio para um valor de temperatura, em graus celcius, armazena esse valor em uma lista com todas as medições aferidas, envia os sinais correspondentes para o diplay mostrar o valor de temperatura calculado e compara esse valor com Tmax, temperatura limite alterável e com valor inicial de 26ºC, e, caso exceda Tmax, engatilha uma subrotina com as tarefas "Ligar o umidificador" e "Ligar o ventilador".
+
+\subsubsection{Ler o sensor de Umidade}
+O controlador calcula o sinal médio recebido do sensor de umidade em um intervalor de tempo t, alterável e com valor inicial de 200ms, transduz esse valor médio para um valor percentual de umidade, armazena esse valor em uma lista com todas as medições aferidas, envia os sinais correspondentes para o diplay mostrar o valor de umidade calculado e compara esse valor com Umin, umidade limite alterável e com valor inicial de 40 pontos percentuais, e, caso seja inferior a Umin, coloca na fila a tarefa "Ligar o umidificador".
+
+\section{Resultados}
+
+\begin{thebibliography}{00}
+	\bibitem{b1} ASHRAE. Principles of Heating, Ventilating, and Air Conditioning. 10th ed.
+	\bibitem{b2} GRAND VIEW RESEARCH. Smart Home Security Market Report. Grand View Research, [2026]. Disponível em: https://www.grandviewresearch.com/industry-analysis/smart-home-security-market-report. Acesso em: 1 out. 2026.
+	\bibitem{b3} IMARC GROUP. Brazil Smart Home Market Size, Share, Trends and Forecast by Device Type, Application, Protocol and Region, 2025-2033. IMARC Group, [2026]. Disponível em: https://www.imarcgroup.com/brazil-smart-home-market. Acesso em: 1 out. 2026.
+	\bibitem{b4} OGATA, K. Discrete-time control systems. 2nd edition. Englewood Cliffs: Prentice Hall, 1995
+	\bibitem{b5} Oliveira, R. S. “Fundamentos dos Sistemas de Tempo Real” 2a Ed.,2020.
+	
+\end{thebibliography}
+
+
+\end{document}
