@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.5.14)  23 NOV 2026 10:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.5.14)  26 NOV 2026 06:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -526,40 +526,40 @@ LaTeX Font Info:    Calculating math sizes for size <11> on input line 47.
 mes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
-]
+] [2]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
-47.
+92.
 
 (C:\Users\games\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 156--157
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
 []\OT1/ptm/m/n/8 GRAND VIEW RE-SEARCH. Smart Home Se-cu-rity Mar-ket
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--157
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
 \OT1/ptm/m/n/8 Re-port. Grand View Re-search, [2026]. Dispon[]^^Pvel em:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--157
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
 \OT1/ptm/m/n/8 https://www.grandviewresearch.com/industry-analysis/smart-home-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 157--158
+Underfull \hbox (badness 10000) in paragraph at lines 202--203
 []\OT1/ptm/m/n/8 IMARC GROUP. Brazil Smart Home Mar-ket Size, Share,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 157--158
+Underfull \hbox (badness 10000) in paragraph at lines 202--203
 \OT1/ptm/m/n/8 Trends and Fore-cast by De-vice Type, Ap-pli-ca-tion, Pro-to-col
 
  []
 
 
-Underfull \hbox (badness 1762) in paragraph at lines 157--158
+Underfull \hbox (badness 1762) in paragraph at lines 202--203
 \OT1/ptm/m/n/8 and Re-gion, 2025-2033. IMARC Group, [2026]. Dispon[]^^Pvel em:
  []
 
@@ -574,7 +574,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2
+[3
 
 ] (relatorio.aux)
  ***********
@@ -582,24 +582,24 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 Package rerunfilecheck Info: File `relatorio.out' has not changed.
-(rerunfilecheck)             Checksum: 680237807D3CD9721A9C41675A45B7A3;2475.
+(rerunfilecheck)             Checksum: 1D408746B735B2B10E24C54A8CB7AB1F;3667.
  ) 
 Here is how much of TeX's memory you used:
- 12641 strings out of 474486
- 203469 string characters out of 5743755
- 1971542 words of memory out of 5000000
- 34749 multiletter control sequences out of 15000+600000
+ 12654 strings out of 474486
+ 203641 string characters out of 5743755
+ 1965542 words of memory out of 5000000
+ 34756 multiletter control sequences out of 15000+600000
  597500 words of font info for 116 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,660b,443s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,741b,443s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/games/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pf
 b><C:/Users/games/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.p
 fb><C:/Users/games/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.p
 fb><C:/Users/games/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on relatorio.pdf (2 pages, 78742 bytes).
+Output written on relatorio.pdf (3 pages, 88915 bytes).
 PDF statistics:
- 111 PDF objects out of 1000 (max. 8388607)
- 25 named destinations out of 1000 (max. 500000)
- 121 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 136 PDF objects out of 1000 (max. 8388607)
+ 31 named destinations out of 1000 (max. 500000)
+ 161 words of extra memory for PDF output out of 10000 (max. 10000000)
 

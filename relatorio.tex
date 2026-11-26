@@ -55,10 +55,55 @@
 \end{IEEEkeywords}
 
 \section{Objetivos}
-Este artigo tem como objetivo o desenvolvimento de uma aplicação prática dos conceitos apresentados na disciplina de Sistemas de Tempo Real ministrada pelo professor Dr. Flavio de Barros Vidal. Este trabalho representa a segunda etapa do projeto onde será apresentado todo o processo de solução utilizado para colocar em prática o que foi definido na primeira etapa, desde a modelagem até a implementação do sistema.
+Este artigo tem o objetivo de apresentar o processo de desenvolvimento de uma aplicação prática dos conceitos apresentados na disciplina de Sistemas de Tempo Real ministrada pelo professor Dr. Flavio de Barros Vidal, aplicados na resolução do problema de climatização de uma sala Este trabalho representa a segunda etapa do projeto onde será apresentado todo o processo de solução utilizado para colocar em prática o que foi definido na primeira etapa, desde a modelagem até a implementação do sistema.
 
 \section{Introdução}
 
+O desenvolvimento de sistemas destinados à melhoria das condições térmicas de ambientes internos requer o devido entendimento de todos os fenômenos físicos envolvidos como transferências de calor e massa, ventilação, umidificação do ar, bem como dos fatores que influenciam a percepção de conforto térmico humano. A utilização conjunta de dispositivos de ventilação e umidificação permite modificar determinadas condições ambientais, promovendo alterações nas trocas térmicas entre o corpo humano e o ambiente e consequentemente permitindo mudar o ambiente de um estado A menos favorável para um estado B mais favorável para um determinado grupo de pessoas que esteja no mesmo.
+
+Como discutido na parte um do projeto, o sistema que foi desenvolvido trata-se de um sistema de climatização de sala de tempo real composto de um sensor e atuadores que visam melhorar o conforto térmico ambiente de acordo com a percepção humana. A seguir serão apresentados os fundamentos para a compreensão do funcionamento do sistema.
+
+\subsection{Conforto térmico} 
+
+O conforto térmico pode ser definido como uma condição de satisfação do indivíduo em relação ao ambiente no qual está inserido. Essa condição está associada ao equilíbrio entre a energia térmica produzida pelo metabolismo humano e a energia transferida entre o corpo e o ambiente.
+
+A avaliação do conforto térmico envolve seis parâmetros fundamentais: temperatura do ar, temperatura radiante média, umidade do ar, velocidade do ar, atividade metabólica e isolamento térmico proporcionado pelo o traje que o usuário usa no momento.
+
+Dentre esses parâmetros apresentados, a temperatura, a umidade relativa do ar e a velocidade do ar são relevantes para o sistema proposto, uma vez que podem ser influenciadas, direta ou indiretamente, pela atuação do ventilador e do umidificador.
+
+O aumento da velocidade do ar favorece, em determinadas condições ambientais, a dissipação de calor corporal por convecção e evaporação do suor. Dessa forma, a utilização do ventilador pode proporcionar melhorias na sensação térmica dos indivíduos dentro de uma sala mesmo quando não ocorre uma redução significativa da temperatura do ambiente.
+
+A umidade relativa, por sua vez, influencia a capacidade de evaporação do suor. Em ambientes com elevada umidade, a evaporação tende a ser dificultada, comprometendo um dos mecanismos naturais de regulação térmica do organismo. Já em no caso de ambientes excessivamente secos, podem ocorrer desconfortos associados ao ressecamento das mucosas.
+
+\subsection{Transferência de calor e ventilação}
+
+A transferência de calor consiste no transporte de energia térmica, devido a diferenças de temperatura, do corpo mais quente para o mais frio. Os mecanismos fundamentais associados a esse fenômeno são a condução, a convecção e a radiação.
+
+No caso do sistema proposto, ocorre a transferência de calor por convecção devido à utilização de um ventilador como elemento atuador. A convecção está associada à transferência de energia térmica entre uma superfície e um fluido em movimento. Quando esse movimento é promovido por agentes externos, tais como ventiladores, o processo é denominado convecção forçada.
+
+Além da transferência de calor por convecção, a circulação do ar pode favorecer a evaporação do suor presente na superfície corporal, contribuindo para a dissipação de energia térmica.
+
+Neste sentido o controle de velocidade do ventilador permite modificar a forma como essa convecção forçada acontece, consequentemente influenciando na melhoria das condições climáticas percebidas pelos indivíduos presentes no ambiente.
+
+\subsection{Umidificação e resfriamento evaporativo}
+
+A umidificação consiste no processo de aumento da quantidade de vapor de água presente no ar. A depender da tecnologia utilizada esse processo pode ocorrer por evaporação direta, atomização de água ou introdução de vapor no ambiente.
+
+Durante a vaporização, a água necessita absorver energia para realizar a transição da fase líquida para a fase gasosa. Quando essa energia é fornecida pelo ar e/ou pelos corpos presentes no ambiente, pode ocorrer uma redução da temperatura de bulbo seco do ar, caracterizando um processo de resfriamento evaporativo.
+
+A atuação conjunta do ventilador e do umidificador no ambiente pode favorecer a distribuição da umidade e intensificar os processos de transferência de calor e massa. Contudo, o aumento excessivo da umidade pode comprometer o conforto térmico dos ocupantes.
+
+\subsection{Influência da temperatura da água na climatização}
+
+A utilização de água inicialmente refrigerada no processo de umidificação introduz um mecanismo adicional de absorção de energia térmica, associado à diferença de temperatura entre a água e o ambiente.
+
+Enquanto a temperatura da água permanece inferior à temperatura do ar, existe potencial para a transferência de calor sensível do ambiente para a água, independentemente da ocorrência de mudança de fase.
+
+\subsection{Percepção térmica humana}
+
+A percepção térmica resulta da interação entre o ambiente e os indivíduos presentes no mesmo. A adaptação ao ambiente e as preferências pessoais podem influenciar a avaliação de conforto, de modo que indivíduos expostos às mesmas condições podem desejar diferentes intensidades de ventilação.
+
+No sistema proposto, o usuário avalia subjetivamente o efeito da ventilação e da umidificação sobre seu conforto. Essa percepção constitui uma fonte de realimentação complementar às medições de temperatura e umidade relativa. O usuário não atua apenas como elemento sensorial, mas também como responsável pela comparação entre a condição percebida e a condição desejada.
 
 \section{Materiais e métodos}
 \subsection{Lista de Materiais} 
