@@ -11,6 +11,10 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{tikz} 
+\usepackage{booktabs}
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric}
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
 		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -107,7 +111,7 @@ No sistema proposto, o usuário avalia subjetivamente o efeito da ventilação e
 
 \section{Materiais e métodos}
 \subsection{Lista de Materiais} 
-De acordo com a solução proposta para o problema e as tarefas concebidas após análise uma lista preeliminar, chegou-se a uma lista preeliminar de materiais a serem utilizados na implementação do projeto, são eles a placa esp32 e todo o devkit para projeto, um sensor de temperatura e umidade DHT22, um display tela LCD para visualizar as informações do sistema, um módulo umidificador ultrassônico,um MOSFET para acionamento de potência, resistores, LEDs, uma protoboard para auxílio na montagem dos circuitos, jumpers e uma fonte 5V/12V para alimentar os elementos de potência.
+De acordo com a solução proposta para o problema e as tarefas concebidas após análise uma lista preeliminar, chegou-se a uma lista preeliminar de materiais a serem utilizados na implementação do projeto, são eles a placa Arduino e todo o devkit para projeto, um sensor de temperatura e umidade DHT22, um display tela LCD para visualizar as informações do sistema, um módulo umidificador ultrassônico,um MOSFET para acionamento de potência, resistores, LEDs, uma protoboard para auxílio na montagem dos circuitos, jumpers e uma fonte 5V/12V para alimentar os elementos de potência.
 Conforme o avanço do projeto esta lista de materiais será melhorada e incrementada para satisfazer as necessidades.
 
 \subsection{Descrição de tarefas}
@@ -195,6 +199,116 @@ O controlador calcula o sinal médio recebido do sensor de temperatura em um int
 O controlador calcula o sinal médio recebido do sensor de umidade em um intervalor de tempo t, alterável e com valor inicial de 200ms, transduz esse valor médio para um valor percentual de umidade, armazena esse valor em uma lista com todas as medições aferidas, envia os sinais correspondentes para o diplay mostrar o valor de umidade calculado e compara esse valor com Umin, umidade limite alterável e com valor inicial de 40 pontos percentuais, e, caso seja inferior a Umin, coloca na fila a tarefa "Ligar o umidificador".
 
 \section{Resultados}
+
+
+A implementação física do protótipo em escala reduzida foi consolidada utilizando a plataforma \textbf{Arduino Uno R3} como unidade central de processamento e escalonamento das tarefas de tempo real, integrada ao sensor digital DHT22, a um visor LCD 16x2 em modo paralelo de 4 bits, a três botões táteis para configuração local dos limiares e a um módulo relé de dois canais para isolamento galvânico e acionamento das cargas de potência, conforme ilustrado na Fig.~\ref{fig:esquematico}.
+
+\begin{figure}[H]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tikzpicture}[
+    font=\footnotesize\sffamily,
+    block/.style={draw, rectangle, rounded corners=2pt, thick, minimum width=3.3cm, minimum height=1.15cm, align=center, fill=gray!8},
+    arduino/.style={draw, rectangle, rounded corners=3pt, very thick, minimum width=7.4cm, minimum height=1.45cm, align=center, fill=blue!8},
+    power/.style={draw, rectangle, dashed, thick, minimum width=3.1cm, minimum height=0.8cm, align=center, fill=yellow!10},
+    line/.style={-{Stealth[scale=0.8]}, thick},
+    wire/.style={thick},
+    pwrline/.style={-{Stealth[scale=0.8]}, thick, red!75!black},
+    pwruni/.style={thick, red!75!black},
+    lbl/.style={fill=white, inner sep=1.2pt, font=\scriptsize\ttfamily}
+]
+
+% Linha 1: Entradas (Sensor DHT22 e Botões IHM)
+\node[block, fill=green!8] (dht) at (-2.0, 2.5) {\textbf{Sensor DHT22}\\\scriptsize Temp. e Umidade};
+\node[block, fill=orange!10] (btns) at (2.0, 2.5) {\textbf{IHM -- Botões (3x)}\\\scriptsize \texttt{A0}: Sel \,|\, \texttt{A1}: $+$ \,|\, \texttt{A2}: $-$};
+
+% Linha 2: Microcontrolador Central
+\node[arduino] (uno) at (0, 0) {\textbf{ARDUINO UNO R3}\\[2pt]\scriptsize Microcontrolador ATmega328P (5V / 16 MHz)};
+
+% Linha 3: Saídas (Display LCD e Módulo Relé)
+\node[block, fill=cyan!10] (lcd) at (-2.0, -2.5) {\textbf{Display LCD 16x2}\\\scriptsize Modo Paralelo 4 bits};
+\node[block, fill=purple!8] (rele) at (2.0, -2.5) {\textbf{Módulo Relé 2 Canais}\\\scriptsize Isolamento Óptico (5V)};
+
+% Linha 4: Atuadores de Potência
+\node[block, fill=red!8] (fan) at (-2.0, -4.8) {\textbf{Ventilador DC 12 V}\\\scriptsize Convecção Forçada};
+\node[block, fill=teal!10] (hum) at (2.0, -4.8) {\textbf{Umidificador 5 V}\\\scriptsize Transdutor Ultrassônico};
+
+% Linha 5: Fontes de Alimentação Externas
+\node[power] (psu12) at (-2.0, -6.5) {\textbf{Fonte Externa 12 V}};
+\node[power] (psu5) at (2.0, -6.5) {\textbf{Fonte USB 5 V}};
+
+% Conexões DHT22 -> Arduino
+\draw[pwruni] (-2.9, 1.925) -- node[lbl] {5V} (-2.9, 0.725);
+\draw[line]   (-2.0, 1.925) -- node[lbl] {D7} (-2.0, 0.725);
+\draw[wire]   (-1.1, 1.925) -- node[lbl] {GND} (-1.1, 0.725);
+
+% Conexões Botões -> Arduino
+\draw[line] (1.1, 1.925) -- node[lbl] {A0} (1.1, 0.725);
+\draw[line] (2.0, 1.925) -- node[lbl] {A1} (2.0, 0.725);
+\draw[line] (2.9, 1.925) -- node[lbl] {A2} (2.9, 0.725);
+
+% Conexões Arduino -> LCD
+\draw[line] (-2.7, -0.725) -- node[lbl] {D12, D11} (-2.7, -1.925);
+\draw[line] (-1.3, -0.725) -- node[lbl] {D5..D2} (-1.3, -1.925);
+
+% Conexões Arduino -> Relé
+\draw[line] (1.3, -0.725) -- node[lbl] {D8 (IN1)} (1.3, -1.925);
+\draw[line] (2.7, -0.725) -- node[lbl] {D9 (IN2)} (2.7, -1.925);
+
+% Conexões Relé -> Atuadores
+\draw[line] (1.3, -3.075) -- (1.3, -3.65) -- node[lbl] {COM1/NO1} (-2.0, -3.65) -- (-2.0, -4.225);
+\draw[line] (2.4, -3.075) -- (2.4, -3.65) -- (2.0, -3.65) -- node[lbl, pos=0.45] {COM2/NO2} (2.0, -4.225);
+
+% Conexões Fontes -> Atuadores
+\draw[pwrline] (psu12.north) -- (fan.south);
+\draw[pwrline] (psu5.north) -- (hum.south);
+
+\end{tikzpicture}%
+}
+\caption{Diagrama esquemático de interligação do sistema de climatização em tempo real baseado no Arduino Uno.}
+\label{fig:esquematico}
+\end{figure}
+
+\subsection{Interface Homem-Máquina e Monitoramento}
+
+Durante a operação contínua, o visor LCD exibe simultaneamente as variáveis ambientais medidas em tempo real (coluna à esquerda) e os valores de referência desejados ou limiares de acionamento (coluna à direita). Na linha superior apresenta-se a temperatura ($T_{\text{atual}} \Rightarrow T_{\text{ref}}$) e, na linha inferior, a umidade relativa do ar ($U_{\text{atual}} \Rightarrow U_{\text{ref}}$).
+
+As tarefas periódicas de aquisição (Tarefas 7 e 8) executaram a leitura do sensor DHT22 e a atualização do visor sem bloquear a resposta aos eventos aperiódicos e esporádicos gerados pelos botões táteis. Por meio dos botões físicos, o usuário pôde alterar dinamicamente os parâmetros $T_{\text{ref}}$ e $U_{\text{ref}}$ em passos discretos de $1{,}00^\circ\text{C}$ e $5{,}00\%$, respectivamente, validando a reconfiguração em tempo de execução prevista na especificação do sistema.
+
+\subsection{Validação Experimental dos Atuadores}
+
+Para verificar a lógica de controle, a exclusão mútua e a resposta física da malha de climatização, conduziram-se ensaios em bancada divididos em três cenários sequenciais de operação, cujos resultados estão sintetizados na Tabela~\ref{tab:resultados_bancada}.
+
+\begin{table}[H]
+\centering
+\caption{Estados operacionais observados nos testes de bancada do protótipo.}
+\label{tab:resultados_bancada}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Cenário de Teste} & \begin{tabular}[c]{@{}c@{}}\textbf{Temp. ($^\circ$C)}\\$T_{\text{atual}} \Rightarrow T_{\text{ref}}$\end{tabular} & \begin{tabular}[c]{@{}c@{}}\textbf{Umidade (\%)}\\$U_{\text{atual}} \Rightarrow U_{\text{ref}}$\end{tabular} & \textbf{Ventilador} & \textbf{Umidificador} \\ \midrule
+1. Repouso Inicial     & $26{,}60 \Rightarrow 30{,}00$ & $72{,}10 \Rightarrow 65{,}00$ & Desligado       & Desligado       \\
+2. Limiar Térmico      & $26{,}70 \Rightarrow 24{,}00$ & $71{,}90 \Rightarrow 65{,}00$ & \textbf{Ligado} & Desligado       \\
+3. Limiar Higrométrico & $26{,}70 \Rightarrow 24{,}00$ & $71{,}90 \Rightarrow 80{,}00$ & \textbf{Ligado} & \textbf{Ligado} \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
+
+Os comportamentos observados em cada etapa comprovam a aderência do sistema ao modelo projetado:
+
+\begin{itemize}
+    \item \textbf{Condição de Conforto (Cenário 1):} Com a temperatura ambiente estabilizada em $26{,}60^\circ\text{C}$ (abaixo do limiar $T_{\text{ref}} = 30{,}00^\circ\text{C}$) e a umidade relativa em $72{,}10\%$ (acima do limiar mínimo $U_{\text{ref}} = 65{,}00\%$), ambos os canais do módulo relé mantiveram-se desenergizados, confirmando a ausência de acionamentos indevidos.
+    
+    \item \textbf{Atuação Térmica por Convecção (Cenário 2):} Ao reduzir manualmente o limiar $T_{\text{ref}}$ de $30{,}00^\circ\text{C}$ para $24{,}00^\circ\text{C}$, o controlador detectou a condição $T_{\text{atual}} > T_{\text{ref}}$ ($26{,}70^\circ\text{C} > 24{,}00^\circ\text{C}$) e comutou imediatamente o Canal 1 do relé, energizando o ventilador DC de 12~V para promover a circulação de ar e a troca térmica por convecção forçada.
+    
+    \item \textbf{Atuação Higrométrica e Resposta do Ambiente (Cenário 3):} Mantendo o ventilador ativo, elevou-se o limiar $U_{\text{ref}}$ de $65{,}00\%$ até $80{,}00\%$. Ao ultrapassar a umidade medida ($71{,}90\% < 80{,}00\%$), o Arduino acionou o Canal 2 do relé, alimentando a placa controladora do transdutor piezoelétrico ultrassônico e iniciando a nebulização de água no reservatório. Durante aproximadamente 25~segundos de atuação contínua, o sensor DHT22 registrou a elevação gradual e efetiva da umidade relativa do ambiente de $71{,}90\%$ para $75{,}10\%$, comprovando o acoplamento físico entre a atuação e a variável controlada.
+\end{itemize}
+
+\subsection{Análise de Desempenho em Tempo Real}
+
+Sob a ótica de sistemas de tempo real, o escalonamento cíclico não-bloqueante implementado no Arduino Uno (baseado em temporização por hardware via \texttt{millis()}) garantiu que nenhuma tarefa excedesse seu respectivo \textit{deadline} (estabelecidos entre $50~\text{s}$ e $1~\text{min}$). A latência entre o acionamento físico dos botões táteis, a atualização do LCD e a comutação eletromecânica dos relés manteve-se na ordem de dezenas de milissegundos, valor substancialmente inferior às constantes de tempo térmicas e higrométricas do ambiente climatizado. Ademais, o uso de variáveis de estado (\textit{flags}) assegurou a exclusão mútua no acesso aos atuadores, impedindo conflitos lógicos entre comandos manuais e rotinas automáticas.
 
 \begin{thebibliography}{00}
 	\bibitem{b1} ASHRAE. Principles of Heating, Ventilating, and Air Conditioning. 10th ed.
